@@ -27,7 +27,7 @@ public class BoardMenu {
             System.out.printf("Bem vindo ao board %s, selecione a operação desejada\n", entity.getId());
             var option = -1;
             while (option != 9) {
-                System.out.println("1 - Criar um card");
+                System.out.println("\n1 - Criar um card");
                 System.out.println("2 - Mover um card");
                 System.out.println("3 - Bloquear um card");
                 System.out.println("4 - Desbloquear um card");
@@ -161,8 +161,8 @@ public class BoardMenu {
             new CardQueryService(connection).findById(selectedCardId)
                     .ifPresentOrElse(
                             c -> {
-                                System.out.printf("Card %s - %s.\n", c.id(), c.title());
-                                System.out.printf("Descrição: %s\n", c.description());
+                                System.out.printf("\nCard %s - %s.\n", c.id(), c.title());
+                                System.out.printf("Descrição: %s\n\n", c.description());
                                 System.out.println(c.blocked() ?
                                         "Está bloqueado. Motivo: " + c.blockReason() :
                                         "Não está bloqueado");
