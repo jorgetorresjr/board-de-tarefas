@@ -67,7 +67,7 @@ public class MainMenu {
         var finalColumn = createColumn(finalColumnName, FINAL, additionalColumns + 1);
         columns.add(finalColumn);
 
-        System.out.println("Informe o nome da coluna de cancelamento do baord");
+        System.out.println("Informe o nome da coluna de cancelamento do board");
         var cancelColumnName = scanner.next();
         var cancelColumn = createColumn(cancelColumnName, CANCEL, additionalColumns + 2);
         columns.add(cancelColumn);
