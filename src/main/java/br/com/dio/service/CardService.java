@@ -34,6 +34,12 @@ public class CardService {
         }
     }
 
+    public void editById(final Long cardId, final String title, final String description) throws SQLException {
+        var dao = new CardDAO(connection);
+        dao.editById(cardId, title, description);
+        connection.commit();
+    }
+
     public void moveToNextColumn(final Long cardId, final List<BoardColumnInfoDTO> boardColumnsInfo) throws SQLException{
         try{
             var dao = new CardDAO(connection);

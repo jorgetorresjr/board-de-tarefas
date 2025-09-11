@@ -35,8 +35,10 @@ public class BoardMenu {
                 System.out.println("6 - Ver board");
                 System.out.println("7 - Ver coluna com cards");
                 System.out.println("8 - Ver card");
-                System.out.println("9 - Voltar para o menu anterior um card");
-                System.out.println("10 - Sair");
+                System.out.println("9 - Editar card");
+                System.out.println("10 - Exportar card");
+                System.out.println("11 - Voltar para o menu anterior um card");
+                System.out.println("12 - Sair");
                 option = scanner.nextInt();
                 switch (option) {
                     case 1 -> createCard();
@@ -47,8 +49,9 @@ public class BoardMenu {
                     case 6 -> showBoard();
                     case 7 -> showColumn();
                     case 8 -> showCard();
-                    case 9 -> System.out.println("Voltando para o menu anterior");
-                    case 10 -> System.exit(0);
+                    case 9 -> editCard();
+                    case 10 -> System.out.println("Voltando para o menu anterior");
+                    case 11 -> System.exit(0);
                     default -> System.out.println("Opção inválida, informe uma opção do menu");
                 }
             }
@@ -57,6 +60,7 @@ public class BoardMenu {
             System.exit(0);
         }
     }
+
 
     private void createCard() throws SQLException{
         var card = new CardEntity();
@@ -170,6 +174,35 @@ public class BoardMenu {
                                 System.out.printf("Está no momento na coluna %s - %s\n", c.columnId(), c.columnName());
                             },
                             () -> System.out.printf("Não existe um card com o id %s\n", selectedCardId));
+        }
+    }
+
+    private void editCard() throws SQLException {
+        System.out.println("Informe o id do card que deseja editar");
+        var cardId = scanner.nextLong();
+        scanner.nextLine(); // consumir quebra de linha
+
+        System.out.println("Novo título (ou pressione ENTER para manter)");
+        var newTitle = scanner.nextLine();
+
+        System.out.println("Nova descrição (ou pressione ENTER para manter)");
+        var newDescription = scanner.nextLine();
+
+        try (var connection = getConnection()) {
+            var cardService = new CardService(connection);
+            var cardOpt = new CardQueryService(connection).findById(cardId);
+
+            if (cardOpt.isPresent()) {
+                var cardDto = cardOpt.get();
+                var finalTitle = newTitle.isBlank() ? cardDto.title() : newTitle;
+                var finalDescription = newDescription.isBlank() ? cardDto.description() : newDescription;
+
+                cardService.editById(cardId, finalTitle, finalDescription);
+                System.out.printf("Card %d atualizado com sucesso!\n", cardId);
+
+            } else {
+                System.out.printf("Card %d não encontrado%n", cardId);
+            }
         }
     }
 

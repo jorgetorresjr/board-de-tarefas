@@ -85,4 +85,18 @@ public class CardDAO {
         return Optional.empty();
     }
 
+    public void editById(Long cardId, String title, String description) throws SQLException {
+        var sql = "UPDATE CARDS SET title = ?, description = ? WHERE id = ?;";
+        try (var statement = connection.prepareStatement(sql)) {
+            statement.setString(1, title);
+            statement.setString(2, description);
+            statement.setLong(3, cardId);
+
+            int rows = statement.executeUpdate();
+            if (rows == 0) {
+                throw new SQLException("Nenhum card encontrado com id " + cardId);
+            }
+        }
+    }
+
 }
